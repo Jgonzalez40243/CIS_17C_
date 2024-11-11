@@ -4,31 +4,39 @@
 #include <cstdlib>   
 ///Time () to seed the random generator///
 #include <ctime>
+
 //*****************************************//
 //Set and map are the TWO associative containers//
 //*****************************************//
+
 /// Set container tracks ships///
 #include <set>       
 /// Map container tracks the board status ///
 #include <map> 
+
 //******************************************//
 //queue and stack are the TWO conatiner adaptors//
 //******************************************//
+
 ///Priority queue is used for computer's attack//
 #include <queue>
 /// Stack container is used for move history ///
 #include <stack>    
+
 ///********************************/// 
 /// For STL algorithms like count ///
 ///******************************///
+
 #include <algorithm> 
 /// The list for the 1 type of sequence ///
 ////       used for history moves      ////
+
 #include <list>      
 
 /// Inorder to not used STD::COUT ///
 /// or to use STD::endl ////
 /// This program will use namespace std ///
+
 using namespace std;
 
 // The board of each player will have a 6x6 size grid //
@@ -65,8 +73,10 @@ struct Attack {
 /// class board is the ///
 /// Core of the project that manages the grid ///
 class Board {
+
 /// Private can only be accessed by functions of its own class///
 private:
+
 /// Set to store the positions of the ships ///
     set<pair<int, int>> ships; 
 /// Map to store the status of each cell on the board ///
@@ -74,6 +84,7 @@ private:
     
 /// public can be accessed by all ///
 public:
+
     // Constructor to initialize the board //
     Board() {
         // Initialize the board with water '~' in each cell //
@@ -87,6 +98,7 @@ public:
 
     // Function to display the board //
     void display(bool isPlayerBoard) {
+
     //Before board a sign of the board game will appear //
     // This will indicate what game the user is playing //
         cout << " _     _ _______ ___     _______ _______ __   __ _______   _______ _______     " << endl;
@@ -133,7 +145,9 @@ public:
                     // If it's the player's board of a hit //
                     // or miss cell, display the status //
                     cout << boardStatus[coord] << " ";
-                } else {
+
+                } 
+                  else {
                     
                     // If the cell is not called //
                     // meaning there is no miss or hit //
@@ -148,7 +162,8 @@ public:
     }
 
     // Function to place a ship at a given location //
-    bool placeShip(int row, int col) {
+    bool placeShip(int row, int col) 
+        {
         pair<int, int> coord = {row, col};
         
         // Check if the coordinates are within bounds and if the spot is empty //
@@ -161,24 +176,31 @@ public:
             boardStatus[coord] = 'S';  
             // Mark the ship position with 'S' //
             // 'S' for ship //
+
             return true;  
             // Successfully placed the ship //
         }
+
         return false;  
         // Invalid placement //
     }
+
     // This allows for the user to place the game with a computer generated grid //
     // Function to place all ships randomly on the board //
     bool randomPlaceShips(int shipCount) {
+
         int placedShips = 0;
         while (placedShips < shipCount) {
+
             int row = rand() % GRID_SIZE;  
             // Random row between 0 and GRID_SIZE-5 //
             // This will allow for any person to change the GRID_SIZE //
             // Without it affecting the game just adding to its complexity //
+
             int col = rand() % GRID_SIZE;  
             // Random column between 0 and GRID_SIZE-5 //
             if (placeShip(row, col)) {  
+
              // Attempt to place a ship at the random location //
                 ++placedShips;  
              // Increment the count of placed ships //
@@ -303,15 +325,19 @@ public:
             // Randomly assign a priority for attack //
             // One of the container adaptors //
             int priority = rand() % 100; 
+
             // Push the attack into the queue with priority //
             attackQueue.push(Attack(row, col, priority));  
+
             // Get the attack with the highest priority //
             Attack attack = attackQueue.top(); 
             // Remove the attack after using it //
             attackQueue.pop();  
+
             // Displays to user which coordinate the computer attacked //
             // Creates suspends if ship was near//
             cout << name << " attacks (" << attack.row << ", " << attack.col << ") with priority " << attack.priority << endl;
+
             // Tracks the attack of the computer //
             previousAttacks.insert({attack.row, attack.col}); 
         } 
@@ -328,6 +354,7 @@ public:
         // If the attack hits a ship //
             cout << "HIT!" << endl;
             opponent.board.display(false); 
+
         // Display opponent's board (hidden ships) //
             return opponent.board.allShipsSunk(); 
             // Check if all ships are sunk //
@@ -343,7 +370,8 @@ public:
     // Function to display the move history of the player
     void displayMoveHistory() {
         cout << name << "'s Move History:" << endl;
-        for (const auto& move : moveHistory) {  
+        for (const auto& move : moveHistory) { 
+
             // Iterate over the move history
             cout << "Row: " << move.first << ", Col: " << move.second << endl; 
             // Display each move
@@ -354,6 +382,7 @@ public:
     void displayHitMissCount() {
         cout << "Hits: " << board.countHits() << endl; 
         // Display the number of hits
+
         cout << "Misses: " << board.countMisses() << endl; 
         // Display the number of misses
     }
@@ -396,8 +425,10 @@ int main() {
                 cout << "********************" << endl;
                 // Player 1 wins //
                 gameOver = true;  
+
                 // End the game //
                 // a big banner to express to user a big celebration //
+
                 cout << ":'######:::'#######::'##::: ##::'######:::'########:::::'###::::'########:'##::::'##:'##::::::::::'###::::'########:'####::'#######::'##::: ##::'######::" <<endl;
                 cout << "'##... ##:'##.... ##: ###:: ##:'##... ##:: ##.... ##:::'## ##:::... ##..:: ##:::: ##: ##:::::::::'## ##:::... ##..::. ##::'##.... ##: ###:: ##:'##... ##:" <<endl;
                 cout << " ##:::..:: ##:::: ##: ####: ##: ##:::..::: ##:::: ##::'##:. ##::::: ##:::: ##:::: ##: ##::::::::'##:. ##::::: ##::::: ##:: ##:::: ##: ####: ##: ##:::..::" <<endl;
@@ -421,6 +452,7 @@ int main() {
               cout << "|  _/ _` | | | | | | '__/ _ | " << endl;
               cout << "| || (_| | | | |_| | | |  __/ " << endl;
               cout << "|_| -__,_|_|_|-__,_|_|  -___| " << endl;
+
             }
         }
        
